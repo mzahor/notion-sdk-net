@@ -11,6 +11,6 @@ namespace Notion.Client
         public override PropertyType Type => PropertyType.Button;
 
         [JsonProperty("button")]
-        public Dictionary<string,object> Button { get; set; }
+        public Dictionary<string, object> Button { get; set; }
     }
 }
