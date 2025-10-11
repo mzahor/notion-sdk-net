@@ -139,5 +139,10 @@
             public static string IntrospectToken() => "/v1/oauth/introspect";
             public static string RefreshToken() => "/v1/oauth/token";
         }
+
+        public static class FileUploadsApiUrls
+        {
+            public static string Create() => "/v1/file_uploads";
+        }
     }
 }

@@ -17,6 +17,9 @@ namespace Notion.Client
         User,
 
         [EnumMember(Value = "comment")]
-        Comment
+        Comment,
+
+        [EnumMember(Value = "file_upload")]
+        FileUpload,
     }
 }

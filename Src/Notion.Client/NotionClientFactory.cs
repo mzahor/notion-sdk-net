@@ -15,6 +15,7 @@
                 , new CommentsClient(restClient)
                 , new BlocksClient(restClient)
                 , new AuthenticationClient(restClient)
+                , new FileUploadsClient(restClient)
             );
         }
     }
