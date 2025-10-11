@@ -18,7 +18,7 @@ public abstract class IntegrationTestBase
         ParentPageId = GetEnvironmentVariableRequired("NOTION_PARENT_PAGE_ID");
         ParentDatabaseId = GetEnvironmentVariableRequired("NOTION_PARENT_DATABASE_ID");
     }
-    
+
     protected static string GetEnvironmentVariableRequired(string envName)
     {
         return Environment.GetEnvironmentVariable(envName) ??
