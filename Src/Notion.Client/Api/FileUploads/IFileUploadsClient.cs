@@ -15,5 +15,19 @@ namespace Notion.Client
             CreateFileUploadRequest fileUploadObjectRequest,
             CancellationToken cancellationToken = default
         );
+
+        /// <summary>
+        /// Send a file upload
+        /// 
+        /// Requires a `file_upload_id`, obtained from the `id` of the Create File Upload API response.
+        /// 
+        /// </summary>
+        /// <param name="sendFileUploadRequest"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<SendFileUploadResponse> SendAsync(
+            SendFileUploadRequest sendFileUploadRequest,
+            CancellationToken cancellationToken = default
+        );
     }
 }

@@ -23,6 +23,15 @@ namespace Notion.Client
             IBasicAuthenticationParameters basicAuthenticationParameters = null,
             CancellationToken cancellationToken = default);
 
+        Task<T> PostAsync<T>(
+            string uri,
+            ISendFileUploadFormDataParameters formData,
+            IEnumerable<KeyValuePair<string, string>> queryParams = null,
+            IDictionary<string, string> headers = null,
+            JsonSerializerSettings serializerSettings = null,
+            IBasicAuthenticationParameters basicAuthenticationParameters = null,
+            CancellationToken cancellationToken = default);
+
         Task<T> PatchAsync<T>(
             string uri,
             object body,

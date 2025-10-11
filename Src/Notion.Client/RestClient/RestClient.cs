@@ -70,6 +70,46 @@ namespace Notion.Client
             return await response.ParseStreamAsync<T>(serializerSettings);
         }
 
+        public async Task<T> PostAsync<T>(
+            string uri,
+            ISendFileUploadFormDataParameters formData,
+            IEnumerable<KeyValuePair<string, string>> queryParams = null,
+            IDictionary<string, string> headers = null,
+            JsonSerializerSettings serializerSettings = null,
+            IBasicAuthenticationParameters basicAuthenticationParameters = null,
+            CancellationToken cancellationToken = default)
+        {
+            void AttachContent(HttpRequestMessage httpRequest)
+            {
+                var fileContent = new StreamContent(formData.File.Data);
+                fileContent.Headers.ContentType = new MediaTypeHeaderValue(formData.File.ContentType);
+
+                var form = new MultipartFormDataContent
+                {
+                    { fileContent, "file", formData.File.FileName }
+                };
+
+                if (!string.IsNullOrEmpty(formData.PartNumber))
+                {
+                    form.Add(new StringContent(formData.PartNumber), "part_number");
+                }
+
+                httpRequest.Content = form;
+            }
+
+            var response = await SendAsync(
+                uri,
+                HttpMethod.Post,
+                queryParams,
+                headers,
+                AttachContent,
+                basicAuthenticationParameters,
+                cancellationToken
+            );
+
+            return await response.ParseStreamAsync<T>(serializerSettings);
+        }
+
         public async Task<T> PatchAsync<T>(
             string uri,
             object body,

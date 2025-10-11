@@ -25,5 +25,37 @@ namespace Notion.IntegrationTests
             Assert.NotNull(response.Status);
             Assert.Equal("sample-image.jpg", response.FileName);
         }
+
+        [Fact]
+        public async Task Verify_file_upload_flow()
+        {
+            // Arrange
+            var createRequest = new CreateFileUploadRequest
+            {
+                Mode = FileUploadMode.SinglePart,
+                Filename = "notion-logo.png",
+            };
+
+            var createResponse = await Client.FileUploads.CreateAsync(createRequest);
+
+            var sendRequest = SendFileUploadRequest.Create(
+                createResponse.Id,
+                new FileData
+                {
+                    FileName = "notion-logo.png",
+                    Data = System.IO.File.OpenRead("assets/notion-logo.png"),
+                    ContentType = createResponse.ContentType
+                }
+            );
+
+            // Act
+            var sendResponse = await Client.FileUploads.SendAsync(sendRequest);
+
+            // Assert
+            Assert.NotNull(sendResponse);
+            Assert.Equal(createResponse.Id, sendResponse.Id);
+            Assert.Equal("notion-logo.png", sendResponse.FileName);
+            Assert.Equal("uploaded", sendResponse.Status);
+        }
     }
 }
