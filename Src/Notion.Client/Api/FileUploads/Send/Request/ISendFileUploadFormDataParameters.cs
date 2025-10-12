@@ -1,10 +1,9 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Notion.Client
 {
     public interface ISendFileUploadFormDataParameters
     {
-
         /// <summary>
         /// The raw binary file contents to upload.
         /// </summary>
