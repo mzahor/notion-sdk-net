@@ -4,7 +4,7 @@ namespace Notion.Client
     {
         public FileUploadMode Mode { get; set; }
 
-        public string Filename { get; set; }
+        public string FileName { get; set; }
 
         public string ContentType { get; set; }
 
