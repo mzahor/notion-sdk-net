@@ -10,13 +10,13 @@ using Xunit;
 
 namespace Notion.UnitTests;
 
-public class FileUploadClientTests
+public class FileUploadsClientTests
 {
     private readonly AutoMocker _mocker = new();
     private readonly FileUploadsClient _fileUploadClient;
     private readonly Mock<IRestClient> _restClientMock;
 
-    public FileUploadClientTests()
+    public FileUploadsClientTests()
     {
         _restClientMock = _mocker.GetMock<IRestClient>();
         _fileUploadClient = _mocker.CreateInstance<FileUploadsClient>();
