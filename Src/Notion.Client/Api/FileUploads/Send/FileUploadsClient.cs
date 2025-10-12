@@ -20,6 +20,14 @@ namespace Notion.Client
                 throw new ArgumentNullException(nameof(sendFileUploadRequest.FileUploadId));
             }
 
+            if (sendFileUploadRequest.PartNumber != null)
+            {
+                if (!int.TryParse(sendFileUploadRequest.PartNumber, out int partNumberValue) || partNumberValue < 1 || partNumberValue > 1000)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(sendFileUploadRequest.PartNumber), "PartNumber must be between 1 and 1000.");
+                }
+            }
+
             var path = ApiEndpoints.FileUploadsApiUrls.Send(sendFileUploadRequest.FileUploadId);
 
             return await _restClient.PostAsync<SendFileUploadResponse>(
