@@ -29,5 +29,16 @@ namespace Notion.Client
             SendFileUploadRequest sendFileUploadRequest,
             CancellationToken cancellationToken = default
         );
+
+        /// <summary>
+        /// After uploading all parts of a file (mode=multi_part), call this endpoint to complete the upload process.
+        /// </summary>
+        /// <param name="completeFileUploadRequest"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<CompleteFileUploadResponse> CompleteAsync(
+            CompleteFileUploadRequest completeFileUploadRequest,
+            CancellationToken cancellationToken = default
+        );
     }
 }
