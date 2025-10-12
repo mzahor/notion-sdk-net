@@ -14,7 +14,7 @@ namespace Notion.IntegrationTests
             {
                 Mode = FileUploadMode.ExternalUrl,
                 ExternalUrl = "https://unsplash.com/photos/hOhlYhAiizc/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzYwMTkxNzc3fA&force=true",
-                Filename = "sample-image.jpg",
+                FileName = "sample-image.jpg",
             };
 
             // Act

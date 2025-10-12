@@ -20,7 +20,7 @@ namespace Notion.Client
         /// from the content_type parameter.
         /// </summary>
         [JsonProperty("filename")]
-        string Filename { get; }
+        string FileName { get; }
 
         /// <summary>
         /// MIME type of the file to be created. Recommended when sending the file in multiple parts. 
