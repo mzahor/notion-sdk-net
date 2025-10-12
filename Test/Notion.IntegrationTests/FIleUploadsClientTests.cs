@@ -33,7 +33,7 @@ namespace Notion.IntegrationTests
             var createRequest = new CreateFileUploadRequest
             {
                 Mode = FileUploadMode.SinglePart,
-                Filename = "notion-logo.png",
+                FileName = "notion-logo.png",
             };
 
             var createResponse = await Client.FileUploads.CreateAsync(createRequest);
