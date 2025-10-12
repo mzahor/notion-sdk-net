@@ -1,3 +1,4 @@
+using System.IO;
 using System.Threading.Tasks;
 using Notion.Client;
 using Xunit;
@@ -38,24 +39,27 @@ namespace Notion.IntegrationTests
 
             var createResponse = await Client.FileUploads.CreateAsync(createRequest);
 
-            var sendRequest = SendFileUploadRequest.Create(
-                createResponse.Id,
-                new FileData
-                {
-                    FileName = "notion-logo.png",
-                    Data = System.IO.File.OpenRead("assets/notion-logo.png"),
-                    ContentType = createResponse.ContentType
-                }
-            );
+            using (var fileStream = File.OpenRead("assets/notion-logo.png"))
+            {
+                var sendRequest = SendFileUploadRequest.Create(
+                    createResponse.Id,
+                    new FileData
+                    {
+                        FileName = "notion-logo.png",
+                        Data = fileStream,
+                        ContentType = createResponse.ContentType
+                    }
+                );
 
-            // Act
-            var sendResponse = await Client.FileUploads.SendAsync(sendRequest);
+                // Act
+                var sendResponse = await Client.FileUploads.SendAsync(sendRequest);
 
-            // Assert
-            Assert.NotNull(sendResponse);
-            Assert.Equal(createResponse.Id, sendResponse.Id);
-            Assert.Equal("notion-logo.png", sendResponse.FileName);
-            Assert.Equal("uploaded", sendResponse.Status);
+                // Assert
+                Assert.NotNull(sendResponse);
+                Assert.Equal(createResponse.Id, sendResponse.Id);
+                Assert.Equal("notion-logo.png", sendResponse.FileName);
+                Assert.Equal("uploaded", sendResponse.Status);
+            }
         }
     }
 }
