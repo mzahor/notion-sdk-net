@@ -15,7 +15,7 @@ namespace Notion.Client
                 throw new ArgumentNullException(nameof(sendFileUploadRequest));
             }
 
-            if (string.IsNullOrEmpty(sendFileUploadRequest.FileUploadId))
+            if (string.IsNullOrWhiteSpace(sendFileUploadRequest.FileUploadId))
             {
                 throw new ArgumentNullException(nameof(sendFileUploadRequest.FileUploadId));
             }
