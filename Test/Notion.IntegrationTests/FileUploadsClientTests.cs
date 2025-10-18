@@ -82,43 +82,44 @@ namespace Notion.IntegrationTests
             Assert.Equal("pending", createResponse.Status);
 
             // Send file parts
-            var fileStream = File.OpenRead("assets/notion-logo.png");
-            var splitStreams = StreamSplitExtensions.Split(fileStream, 2);
-            fileStream.Close();
-
-            foreach (var (partStream, index) in splitStreams.WithIndex())
+            using (var fileStream = File.OpenRead("assets/notion-logo.png"))
             {
-                var partSendRequest = SendFileUploadRequest.Create(
-                    createResponse.Id,
-                    new FileData
-                    {
-                        FileName = "notion-logo.png",
-                        Data = partStream,
-                        ContentType = createResponse.ContentType
-                    },
+                var splitStreams = StreamSplitExtensions.Split(fileStream, 2);
 
-                    partNumber: (index + 1).ToString()
-                );
+                foreach (var (partStream, index) in splitStreams.WithIndex())
+                {
+                    var partSendRequest = SendFileUploadRequest.Create(
+                        createResponse.Id,
+                        new FileData
+                        {
+                            FileName = "notion-logo.png",
+                            Data = partStream,
+                            ContentType = createResponse.ContentType
+                        },
 
-                var partSendResponse = await Client.FileUploads.SendAsync(partSendRequest);
+                        partNumber: (index + 1).ToString()
+                    );
 
-                Assert.NotNull(partSendResponse);
-                Assert.Equal(createResponse.Id, partSendResponse.Id);
-                Assert.Equal("notion-logo.png", partSendResponse.FileName);
+                    var partSendResponse = await Client.FileUploads.SendAsync(partSendRequest);
+
+                    Assert.NotNull(partSendResponse);
+                    Assert.Equal(createResponse.Id, partSendResponse.Id);
+                    Assert.Equal("notion-logo.png", partSendResponse.FileName);
+                }
+
+                // Complete file upload
+                var completeRequest = new CompleteFileUploadRequest
+                {
+                    FileUploadId = createResponse.Id
+                };
+
+                var completeResponse = await Client.FileUploads.CompleteAsync(completeRequest);
+
+                Assert.NotNull(completeResponse);
+                Assert.Equal(createResponse.Id, completeResponse.Id);
+                Assert.Equal("notion-logo.png", completeResponse.FileName);
+                Assert.Equal("completed", completeResponse.Status);
             }
-
-            // Complete file upload
-            var completeRequest = new CompleteFileUploadRequest
-            {
-                FileUploadId = createResponse.Id
-            };
-
-            var completeResponse = await Client.FileUploads.CompleteAsync(completeRequest);
-
-            Assert.NotNull(completeResponse);
-            Assert.Equal(createResponse.Id, completeResponse.Id);
-            Assert.Equal("notion-logo.png", completeResponse.FileName);
-            Assert.Equal("completed", completeResponse.Status);
         }
     }
 }
