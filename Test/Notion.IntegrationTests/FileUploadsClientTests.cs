@@ -121,5 +121,23 @@ namespace Notion.IntegrationTests
                 Assert.Equal("completed", completeResponse.Status);
             }
         }
+
+        [Fact]
+        public async Task ListAsync()
+        {
+            // Arrange
+            var request = new ListFileUploadsRequest
+            {
+                PageSize = 5
+            };
+
+            // Act
+            var response = await Client.FileUploads.ListAsync(request);
+
+            // Assert
+            Assert.NotNull(response);
+            Assert.NotNull(response.Results);
+            Assert.True(response.Results.Count <= 5);
+        }
     }
 }
