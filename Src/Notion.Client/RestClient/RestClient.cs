@@ -53,8 +53,13 @@ namespace Notion.Client
         {
             void AttachContent(HttpRequestMessage httpRequest)
             {
-                httpRequest.Content = new StringContent(JsonConvert.SerializeObject(body, DefaultSerializerSettings),
-                    Encoding.UTF8, "application/json");
+                if (body == null)
+                {
+                    return;
+                }
+
+                var jsonObjectString = JsonConvert.SerializeObject(body, DefaultSerializerSettings);
+                httpRequest.Content = new StringContent(jsonObjectString, Encoding.UTF8, "application/json");
             }
 
             var response = await SendAsync(
