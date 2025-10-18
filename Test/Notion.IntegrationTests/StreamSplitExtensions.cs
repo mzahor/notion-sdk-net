@@ -27,9 +27,9 @@ namespace Notion.IntegrationTests
             long baseSize = totalSize / numberOfParts;
             long remainder = totalSize % numberOfParts;
 
-            while (numberOfParts-- > 0)
+            for (int i = 0; i < numberOfParts; i++)
             {
-                long currentPartSize = numberOfParts == 0 ? baseSize + remainder : baseSize;
+                long currentPartSize = i == numberOfParts - 1 ? baseSize + remainder : baseSize;
 
                 var partStream = new MemoryStream();
                 CopyStream(buffer, partStream, currentPartSize);
