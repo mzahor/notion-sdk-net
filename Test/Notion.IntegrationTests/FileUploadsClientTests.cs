@@ -139,5 +139,41 @@ namespace Notion.IntegrationTests
             Assert.NotNull(response.Results);
             Assert.True(response.Results.Count <= 5);
         }
+
+        [Fact]
+        public async Task RetrieveAsync()
+        {
+            // Arrange
+            var createRequest = new CreateFileUploadRequest
+            {
+                Mode = FileUploadMode.ExternalUrl,
+                ExternalUrl = "https://unsplash.com/photos/hOhlYhAiizc/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzYwMTkxNzc3fA&force=true",
+                FileName = "sample-image.jpg",
+            };
+
+            var createResponse = await Client.FileUploads.CreateAsync(createRequest);
+
+            Assert.NotNull(createResponse);
+            Assert.NotNull(createResponse.Id);
+            Assert.Equal("sample-image.jpg", createResponse.FileName);
+            Assert.Equal("image/jpeg", createResponse.ContentType);
+            Assert.Equal("pending", createResponse.Status);
+
+            // Act
+            var retrieveRequest = new RetrieveFileUploadRequest
+            {
+                FileUploadId = createResponse.Id
+            };
+
+            var retrieveResponse = await Client.FileUploads.RetrieveAsync(retrieveRequest);
+
+            // Assert
+            Assert.NotNull(retrieveResponse);
+            Assert.Equal(createResponse.Id, retrieveResponse.Id);
+            Assert.Equal("sample-image.jpg", retrieveResponse.FileName);
+            Assert.Equal("image/jpeg", retrieveResponse.ContentType);
+            // The status might have changed from "pending" to "uploaded" depending on Notion's processing time
+            Assert.Contains(retrieveResponse.Status, new[] { "pending", "uploaded" });
+        }
     }
 }
