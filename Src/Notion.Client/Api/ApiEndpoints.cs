@@ -146,6 +146,7 @@
             public static string Send(string fileUploadId) => $"/v1/file_uploads/{fileUploadId}/send";
             public static string Complete(string fileUploadId) => $"/v1/file_uploads/{fileUploadId}/complete";
             public static string List => "/v1/file_uploads";
+            public static string Retrieve(IRetrieveFileUploadPathParameters pathParameters) => $"/v1/file_uploads/{pathParameters.FileUploadId}";
         }
     }
 }

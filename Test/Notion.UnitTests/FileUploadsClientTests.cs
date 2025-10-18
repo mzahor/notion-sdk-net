@@ -219,4 +219,61 @@ public class FileUploadsClientTests
     }
 
     #endregion ListAsync Tests
+
+    #region RetrieveAsync Tests
+
+    // Add tests for RetrieveAsync method
+    [Fact]
+    public async Task RetrieveAsync_ThrowsArgumentNullException_WhenFileUploadIdIsNullOrEmpty()
+    {
+        // Arrange
+        var request = new RetrieveFileUploadRequest
+        {
+            FileUploadId = null
+        };
+
+        // Act & Assert
+        var exception = await Assert.ThrowsAsync<ArgumentNullException>(() => _fileUploadClient.RetrieveAsync(request));
+        Assert.Equal("FileUploadId", exception.ParamName);
+        Assert.Equal("FileUploadId cannot be null or empty. (Parameter 'FileUploadId')", exception.Message);
+    }
+
+    [Fact]
+    public async Task RetrieveAsync_CallsRestClientGetAsync_WithCorrectParameters()
+    {
+        // Arrange
+        var fileUploadId = Guid.NewGuid().ToString();
+        var request = new RetrieveFileUploadRequest
+        {
+            FileUploadId = fileUploadId
+        };
+
+        var expectedResponse = new RetrieveFileUploadResponse
+        {
+            Id = fileUploadId,
+            FileName = "testfile.txt",
+            Status = "completed"
+        };
+
+        _restClientMock
+            .Setup(client => client.GetAsync<RetrieveFileUploadResponse>(
+                It.Is<string>(url => url == ApiEndpoints.FileUploadsApiUrls.Retrieve(request)),
+                It.IsAny<IDictionary<string, string>>(),
+                null,
+                null,
+                It.IsAny<CancellationToken>()
+            ))
+            .ReturnsAsync(expectedResponse);
+
+        // Act
+        var response = await _fileUploadClient.RetrieveAsync(request);
+
+        // Assert
+        Assert.Equal(expectedResponse.Id, response.Id);
+        Assert.Equal(expectedResponse.FileName, response.FileName);
+        Assert.Equal(expectedResponse.Status, response.Status);
+        _restClientMock.VerifyAll();
+    }
+
+    #endregion RetrieveAsync Tests
 }

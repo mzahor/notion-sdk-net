@@ -51,5 +51,16 @@ namespace Notion.Client
             ListFileUploadsRequest request,
             CancellationToken cancellationToken = default
         );
+
+        /// <summary>
+        /// Retrieve a specific File Upload by its ID.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<RetrieveFileUploadResponse> RetrieveAsync(
+            RetrieveFileUploadRequest request,
+            CancellationToken cancellationToken = default
+        );
     }
 }
