@@ -143,6 +143,7 @@
         public static class FileUploadsApiUrls
         {
             public static string Create() => "/v1/file_uploads";
+            public static string Send(string fileUploadId) => $"/v1/file_uploads/{fileUploadId}/send";
         }
     }
 }
