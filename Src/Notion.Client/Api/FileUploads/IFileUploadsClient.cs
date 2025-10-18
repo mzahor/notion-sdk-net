@@ -40,5 +40,16 @@ namespace Notion.Client
             CompleteFileUploadRequest completeFileUploadRequest,
             CancellationToken cancellationToken = default
         );
+
+        /// <summary>
+        /// List File Uploads for the current bot integration, sorted by most recent first.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<ListFileUploadsResponse> ListAsync(
+            ListFileUploadsRequest request,
+            CancellationToken cancellationToken = default
+        );
     }
 }
