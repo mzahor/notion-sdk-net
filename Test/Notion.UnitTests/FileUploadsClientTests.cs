@@ -178,4 +178,45 @@ public class FileUploadsClientTests
         Assert.Equal(expectedResponse.Id, response.Id);
         _restClientMock.VerifyAll();
     }
+
+    #region ListAsync Tests
+
+    [Fact]
+    public async Task ListAsync_CallsRestClientGetAsync_WithCorrectParameters()
+    {
+        // Arrange
+        var request = new ListFileUploadsRequest
+        {
+            PageSize = 10,
+            StartCursor = "cursor123",
+            Status = "completed"
+        };
+
+        _restClientMock
+            .Setup(client => client.GetAsync<ListFileUploadsResponse>(
+                It.Is<string>(url => url == ApiEndpoints.FileUploadsApiUrls.List),
+                It.IsAny<IDictionary<string, string>>(),
+                null,
+                null,
+                It.IsAny<CancellationToken>()
+            ))
+            .ReturnsAsync(new ListFileUploadsResponse
+            {
+                Results = new List<FileObjectResponse>
+                {
+                    new() { Id = "file1", Status = "completed" },
+                    new() { Id = "file2", Status = "completed" }
+                }
+            });
+
+        // Act
+        var response = await _fileUploadClient.ListAsync(request);
+
+        // Assert
+        Assert.NotNull(response);
+        Assert.Equal(2, response.Results.Count);
+        _restClientMock.VerifyAll();
+    }
+
+    #endregion ListAsync Tests
 }
