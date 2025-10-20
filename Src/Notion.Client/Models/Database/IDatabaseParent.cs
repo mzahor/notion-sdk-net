@@ -7,6 +7,7 @@ namespace Notion.Client
     [JsonSubtypes.KnownSubTypeAttribute(typeof(PageParent), ParentType.PageId)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(WorkspaceParent), ParentType.Workspace)]
     [JsonSubtypes.KnownSubTypeAttribute(typeof(BlockParent), ParentType.BlockId)]
+    [JsonSubtypes.KnownSubTypeAttribute(typeof(DatabaseParent), ParentType.DatabaseId)]
     public interface IDatabaseParent : IParent
     {
     }
